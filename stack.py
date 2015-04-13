@@ -44,6 +44,10 @@ if __name__ == "__main__":
     path = traverse_stack_graph(graph, idx[1])
     xs_new = xs[path]
 
-    f, pxx_den = sci_sig.periodogram(xs_new)
-    plt.semilogy(f, pxx_den)
+    plt.plot(xs_new)
+    plt.plot(xs)
+    #f, pxx_den = sci_sig.periodogram(xs_new)
+    #f2, pxx_den2 = sci_sig.periodogram(xs)
+    #plt.semilogy(f, pxx_den)
+    #plt.semilogy(f2, pxx_den2)
     plt.show()
