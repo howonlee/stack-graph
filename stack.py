@@ -70,7 +70,7 @@ if __name__ == "__main__":
     word_graph = stack_graph(word_idx)
     flipped_map = flip(word_map)
     word_path = traverse_stack_graph(word_graph, word_idx[1])
-    print path_to_words(word_path[1000:1100], flipped_map)
+    print " ".join(path_to_words(word_path[1000:5000], flipped_map))
 
     #plt.plot(np.array(word_idx[:500]))
     #plt.plot(np.array(word_path[:500]))
