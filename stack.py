@@ -63,19 +63,30 @@ def path_to_words(path, flipped_map):
         words.append(flipped_map[word])
     return words
 
+def test_logistic():
+    pass
 
-if __name__ == "__main__":
-    #idx = idx[:10]
+def test_fbm():
+    pass
+
+def test_words():
+    idx = idx[:10]
     word_idx, word_map = word_load()
     word_graph = stack_graph(word_idx)
     flipped_map = flip(word_map)
     word_path = traverse_stack_graph(word_graph, word_idx[1])
     print " ".join(path_to_words(word_path[1000:5000], flipped_map))
 
-    #plt.plot(np.array(word_idx[:500]))
-    #plt.plot(np.array(word_path[:500]))
-    #f, pxx_den = sci_sig.periodogram(xs_new)
-    #f2, pxx_den2 = sci_sig.periodogram(xs)
-    #plt.semilogy(f, pxx_den)
-    #plt.semilogy(f2, pxx_den2)
-    #plt.show()
+    plt.plot(np.array(word_idx[:500]))
+    plt.plot(np.array(word_path[:500]))
+    f, pxx_den = sci_sig.periodogram(xs_new)
+    f2, pxx_den2 = sci_sig.periodogram(xs)
+    plt.semilogy(f, pxx_den)
+    plt.semilogy(f2, pxx_den2)
+    plt.show()
+
+#gotta do the constellation of graph statistics manually
+#have a bunch of example stack graphs, check by hand
+
+if __name__ == "__main__":
+    test_fbm()
