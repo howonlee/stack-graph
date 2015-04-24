@@ -47,10 +47,10 @@ def traverse_stack_graph(graph, start):
         path.append(curr_member)
     return path
 
-def logit_map():
+def gen_logistic_map(n=1000):
     xs = []
     curr_x = 0.5
-    for x in xrange(1000):
+    for x in xrange(n):
         x_i = logistic_map(curr_x)
         curr_x = x_i
         xs.append(x_i)
@@ -64,7 +64,14 @@ def path_to_words(path, flipped_map):
     return words
 
 def test_logistic():
-    pass
+    logit = gen_logistic_map()
+    logit_list = list(logit[1])
+    logit_graph = stack_graph(logit_list)
+    resampled_path = traverse_stack_graph(logit_graph, logit_list[1])[500:800]
+    plt.close()
+    plt.plot(logit_list[500:800], "b")
+    plt.plot(resampled_path, "r")
+    plt.show()
 
 def test_fbm():
     pass
@@ -89,4 +96,4 @@ def test_words():
 #have a bunch of example stack graphs, check by hand
 
 if __name__ == "__main__":
-    test_fbm()
+    test_logistic()
