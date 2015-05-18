@@ -2,6 +2,8 @@ import numpy as np
 import scipy.signal as sci_sig
 import matplotlib.pyplot as plt
 import collections
+import csv
+import glob
 
 def word_load(filename="corpus.txt"):
     with open(filename, "r") as corpus_file:
@@ -73,6 +75,48 @@ def test_logistic():
     plt.plot(resampled_path, "r")
     plt.show()
 
+def logistic_degrees():
+    logit = gen_logistic_map()
+    logit_list = list(logit[1])
+    logit_graph = stack_graph(logit_list)
+    degrees = []
+    for node, adjlist in logit_graph.items():
+        degree = len(adjlist)
+        degrees.append(degree)
+    degrees = sorted(degrees, reverse=True)
+    plt.loglog(degrees)
+    plt.show()
+
+def word_degrees():
+    word_idx, word_map = word_load()
+    word_graph = stack_graph(word_idx)
+    degrees = []
+    for node, adjlist in word_graph.items():
+        degree = len(adjlist)
+        degrees.append(degree)
+    degrees = sorted(degrees, reverse=True)
+    plt.loglog(degrees)
+    plt.show()
+
+def ts_degrees():
+    processed_globs = glob.glob("/home/curuinor/data/vr_synchrony/*.csv_summed_*.csv")
+    #unprocessed_globs = glob.glob("/home/curuinor/data/vr_synchrony/*0.csv")
+    glob = [globs[0]]
+    path_splits = os.path.split(glob)[1].split(".", 2)
+    curr_fname = "".join([path_splits[0], path_splits[1]])
+    print curr_fname
+    with open(glob, "rU") as part_file:
+        part_reader = csv.reader(part_file)
+        print list(part_readeR)
+    #ts_graph = stack_graph(ts_idx)
+    #degrees = []
+    #for node, adjlist in word_graph.items():
+    #    degree = len(adjlist)
+    #    degrees.append(degree)
+    #degrees = sorted(degrees, reverse=True)
+    #plt.loglog(degrees)
+    #plt.show()
+
 def test_fbm():
     pass
 
@@ -96,4 +140,4 @@ def test_words():
 #have a bunch of example stack graphs, check by hand
 
 if __name__ == "__main__":
-    test_logistic()
+    ts_degrees()
