@@ -2,8 +2,10 @@ import numpy as np
 import scipy.signal as sci_sig
 import matplotlib.pyplot as plt
 import collections
+import operator
 import csv
 import glob
+import os
 
 def word_load(filename="corpus.txt"):
     with open(filename, "r") as corpus_file:
@@ -27,7 +29,7 @@ def logistic_map(x_n):
     r = 3.8 #chaos
     return r * x_n * (1 - x_n)
 
-def discretize(data, bucket_size=0.01):
+def discretize(data, bucket_size=0.2):
     data = np.array(data)
     data_min, data_max = np.min(data), np.max(data)
     buckets = np.arange(data_min, data_max, bucket_size)
@@ -99,23 +101,31 @@ def word_degrees():
     plt.show()
 
 def ts_degrees():
+    def process_float(float_str):
+        try:
+            return float(float_str)
+        except:
+            return 0.0
     processed_globs = glob.glob("/home/curuinor/data/vr_synchrony/*.csv_summed_*.csv")
     #unprocessed_globs = glob.glob("/home/curuinor/data/vr_synchrony/*0.csv")
-    glob = [globs[0]]
-    path_splits = os.path.split(glob)[1].split(".", 2)
+    curr_path = processed_globs[0]
+    path_splits = os.path.split(curr_path)[1].split(".", 2)
     curr_fname = "".join([path_splits[0], path_splits[1]])
     print curr_fname
-    with open(glob, "rU") as part_file:
+    with open(curr_path, "rU") as part_file:
         part_reader = csv.reader(part_file)
-        print list(part_readeR)
-    #ts_graph = stack_graph(ts_idx)
-    #degrees = []
-    #for node, adjlist in word_graph.items():
-    #    degree = len(adjlist)
-    #    degrees.append(degree)
-    #degrees = sorted(degrees, reverse=True)
-    #plt.loglog(degrees)
-    #plt.show()
+        curr_west = map(operator.itemgetter(1), part_reader)
+        curr_west = curr_west[1:]
+        curr_west = map(process_float, curr_west)
+    _, ts_idx = discretize(curr_west)
+    ts_graph = stack_graph(ts_idx)
+    degrees = []
+    for node, adjlist in ts_graph.items():
+        degree = len(adjlist)
+        degrees.append(degree)
+    degrees = sorted(degrees, reverse=True)
+    plt.loglog(degrees)
+    plt.show()
 
 def test_fbm():
     pass
