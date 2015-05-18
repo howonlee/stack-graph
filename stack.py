@@ -127,6 +127,18 @@ def ts_degrees():
     plt.loglog(degrees)
     plt.show()
 
+def fbm_degrees():
+    fbm = np.load("quick_fbm.npy")
+    _, fbm_idx = discretize(fbm)
+    fbm_graph = stack_graph(fbm_idx)
+    degrees = []
+    for node, adjlist in fbm_graph.items():
+        degree = len(adjlist)
+        degrees.append(degree)
+    degrees = sorted(degrees, reverse=True)
+    plt.loglog(degrees)
+    plt.show()
+
 def test_fbm():
     pass
 
@@ -150,4 +162,4 @@ def test_words():
 #have a bunch of example stack graphs, check by hand
 
 if __name__ == "__main__":
-    ts_degrees()
+    fbm_degrees()
