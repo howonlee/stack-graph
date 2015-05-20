@@ -2,6 +2,7 @@ import numpy as np
 import scipy.signal as sci_sig
 import matplotlib.pyplot as plt
 import collections
+import scipy.signal as sci_sig
 import operator
 import csv
 import glob
@@ -158,8 +159,16 @@ def test_words():
     plt.semilogy(f2, pxx_den2)
     plt.show()
 
+def fbm_spectrum():
+    fbm = np.load("quick_fbm.npy")
+    f, Pxx = sci_sig.periodogram(fbm)
+    plt.loglog(f, np.sqrt(Pxx))
+    plt.show()
+    #actually periodogram
+
 #gotta do the constellation of graph statistics manually
 #have a bunch of example stack graphs, check by hand
 
 if __name__ == "__main__":
-    fbm_degrees(unstackify=True)
+    fbm_spectrum()
+    #fbm_degrees(unstackify=False)
