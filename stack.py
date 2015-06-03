@@ -191,7 +191,7 @@ def spectrum_logistic():
     plt.savefig("spectrum_logistic")
 
 def spectrum_sinusoid():
-    sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
+    sinusoid = np.sin(np.linspace(0, 6 * np.pi, 1500))
     f, Pxx = sci_sig.periodogram(sinusoid)
     plt.close()
     plt.loglog(f, np.sqrt(Pxx))
@@ -218,7 +218,7 @@ def plot_logistic():
     plt.savefig("plot_logistic")
 
 def plot_sinusoid():
-    sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
+    sinusoid = np.sin(np.linspace(0, 6 * np.pi, 1500))
     plt.close()
     plt.plot(sinusoid)
     plt.savefig("plot_sinusoid")
@@ -260,3 +260,7 @@ if __name__ == "__main__":
     plot_logistic()
     plot_sinusoid()
     plot_vr()
+    spectrum_fbm()
+    spectrum_logistic()
+    spectrum_sinusoid()
+    spectrum_vr()
