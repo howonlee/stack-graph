@@ -250,25 +250,32 @@ def degree_vr():
     plt.close()
     #######################
 
-
 def clustering_fbm():
-    pass
+    fbm = np.load("quick_fbm.npy")[0:1500]
+    plt.close()
+    #######################
 
 def clustering_logistic():
-    pass
+    logit = gen_logistic_map(1500)
+    plt.close()
+    #######################
 
 def clustering_sinusoid():
-    pass
+    sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
+    plt.close()
+    #######################
 
 def clustering_vr():
-    pass
+    vr = open_vr()
+    plt.close()
+    #######################
 
 if __name__ == "__main__":
-    plot_fbm()
-    plot_logistic()
-    plot_sinusoid()
-    plot_vr()
-    spectrum_fbm()
-    spectrum_logistic()
-    spectrum_sinusoid()
-    spectrum_vr()
+    degree_fbm()
+    degree_logistic()
+    degree_sinusoid()
+    degree_vr()
+    clustering_fbm()
+    clustering_logistic()
+    clustering_sinusoid()
+    clustering_vr()
