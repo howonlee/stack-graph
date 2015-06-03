@@ -159,16 +159,76 @@ def test_words():
     plt.semilogy(f2, pxx_den2)
     plt.show()
 
-def fbm_spectrum():
+def spectrum_fbm():
     fbm = np.load("quick_fbm.npy")
     f, Pxx = sci_sig.periodogram(fbm)
     plt.loglog(f, np.sqrt(Pxx))
     plt.show()
     #actually periodogram
 
-#gotta do the constellation of graph statistics manually
-#have a bunch of example stack graphs, check by hand
+def spectrum_logistic():
+    pass #feels stupid, I really do
+
+def spectrum_sinusoid():
+    pass #feels stupid, I really do
+
+def spectrum_vr():
+    pass
+
+
+def plot_fbm():
+    pass
+
+def plot_logistic():
+    pass
+
+def plot_sinusoid():
+    pass
+
+def plot_vr():
+    pass
+
+
+def degree_fbm():
+    pass
+
+def degree_logistic():
+    pass
+
+def degree_sinusoid():
+    pass
+
+def degree_vr():
+    pass
+
+
+def eigenval_fbm():
+    pass
+
+def eigenval_logistic():
+    pass
+
+def eigenval_sinusoid():
+    pass
+
+def eigenval_vr():
+    pass
+
+
+def pathlength_fbm():
+    pass
+
+def pathlength_logistic():
+    pass
+
+def pathlength_sinusoid():
+    pass
+
+def pathlength_vr():
+    pass
 
 if __name__ == "__main__":
-    fbm_spectrum()
-    #fbm_degrees(unstackify=False)
+    plot_fbm()
+    plot_logistic()
+    plot_sinusoid()
+    plot_vr()
