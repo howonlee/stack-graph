@@ -8,6 +8,21 @@ import csv
 import glob
 import os
 
+def process_num(num_str):
+    if num_str == "NA":
+        return 0.0
+    else:
+        return float(num_str)
+
+def open_vr(filename="vr_data.csv"):
+    vr = []
+    with open(filename, "rU") as vr_file:
+        part_reader = csv.reader(vr_file)
+        part_reader.next()
+        for row in part_reader:
+            vr.append(process_num(row[1]))
+    return vr
+
 def word_load(filename="corpus.txt"):
     with open(filename, "r") as corpus_file:
         words = corpus_file.read().split()
@@ -59,8 +74,10 @@ def gen_logistic_map(n=1000):
         x_i = logistic_map(curr_x)
         curr_x = x_i
         xs.append(x_i)
-    xs = np.array(xs)
-    return discretize(xs)
+    return np.array(xs)
+
+def gen_disc_logistic_map(n=1000):
+    return discretize(gen_logistic_map(n))
 
 def path_to_words(path, flipped_map):
     words = []
@@ -162,31 +179,55 @@ def test_words():
 def spectrum_fbm():
     fbm = np.load("quick_fbm.npy")
     f, Pxx = sci_sig.periodogram(fbm)
+    plt.close()
     plt.loglog(f, np.sqrt(Pxx))
-    plt.show()
-    #actually periodogram
+    plt.savefig("spectrum_fbm")
 
 def spectrum_logistic():
-    pass #feels stupid, I really do
+    logit = gen_logistic_map(1500)
+    f, Pxx = sci_sig.periodogram(logit)
+    plt.close()
+    plt.loglog(f, np.sqrt(Pxx))
+    plt.savefig("spectrum_logistic")
 
 def spectrum_sinusoid():
-    pass #feels stupid, I really do
+    sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
+    f, Pxx = sci_sig.periodogram(sinusoid)
+    plt.close()
+    plt.loglog(f, np.sqrt(Pxx))
+    plt.savefig("spectrum_sinusoid")
 
 def spectrum_vr():
-    pass
+    vr = open_vr()
+    f, Pxx = sci_sig.periodogram(vr)
+    plt.close()
+    plt.loglog(f, np.sqrt(Pxx))
+    plt.savefig("spectrum_vr")
 
 
 def plot_fbm():
-    pass
+    fbm = np.load("quick_fbm.npy")[0:1500]
+    plt.close()
+    plt.plot(fbm)
+    plt.savefig("plot_fbm")
 
 def plot_logistic():
-    pass
+    logit = gen_logistic_map(1500)
+    plt.close()
+    plt.plot(logit)
+    plt.savefig("plot_logistic")
 
 def plot_sinusoid():
-    pass
+    sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
+    plt.close()
+    plt.plot(sinusoid)
+    plt.savefig("plot_sinusoid")
 
 def plot_vr():
-    pass
+    vr = open_vr()
+    plt.close()
+    plt.plot(vr)
+    plt.savefig("plot_vr")
 
 
 def degree_fbm():
@@ -202,29 +243,16 @@ def degree_vr():
     pass
 
 
-def eigenval_fbm():
+def clustering_fbm():
     pass
 
-def eigenval_logistic():
+def clustering_logistic():
     pass
 
-def eigenval_sinusoid():
+def clustering_sinusoid():
     pass
 
-def eigenval_vr():
-    pass
-
-
-def pathlength_fbm():
-    pass
-
-def pathlength_logistic():
-    pass
-
-def pathlength_sinusoid():
-    pass
-
-def pathlength_vr():
+def clustering_vr():
     pass
 
 if __name__ == "__main__":
