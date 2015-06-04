@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import collections
 import scipy.signal as sci_sig
 import operator
+import copy
+import networkx as nx
 import csv
 import glob
 import os
@@ -59,6 +61,7 @@ def stack_graph(data):
     return graph
 
 def traverse_stack_graph(graph, start):
+    graph = copy.deepcopy(graph)
     curr_idx = start
     path = [start]
     while len(graph[curr_idx]) > 0:
@@ -229,25 +232,47 @@ def plot_vr():
     plt.plot(vr)
     plt.savefig("plot_vr")
 
+def graphify(ts):
+    ts_map, idxs = discretize(ts, bucket_size=0.05)
+    idxs = list(idxs)
+    graph = stack_graph(idxs)
+    resampled_path1 = traverse_stack_graph(graph, idxs[0])
+    resampled_path2 = traverse_stack_graph(graph, idxs[1])
+    return graph, resampled_path1, resampled_path2
+
+def nx_graphify(ts):
+    net = nx.DiGraph()
+    graph, _, _ = graphify(ts)
+    print graph
+
+def plot_stack_deg(ts, name):
+    graph, _, _ = graphify(ts)
+    degrees = []
+    for node, adjlist in graph.items():
+        degree = len(adjlist)
+        degrees.append(degree)
+    degrees = sorted(degrees, reverse=True)
+    plt.close()
+    plt.loglog(degrees)
+    plt.show()
 
 def degree_fbm():
     fbm = np.load("quick_fbm.npy")[0:1500]
-    plt.close()
-    #######################
+    plot_stack_deg(fbm, "degrees_fbm")
 
 def degree_logistic():
     logit = gen_logistic_map(1500)
-    plt.close()
+    plot_stack_deg(logit, "degrees_logit")
     #######################
 
 def degree_sinusoid():
-    sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
-    plt.close()
+    sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
+    plot_stack_deg(sinusoid, "degrees_sinusoid")
     #######################
 
 def degree_vr():
     vr = open_vr()
-    plt.close()
+    plot_stack_deg(vr, "degrees_vr")
     #######################
 
 def clustering_fbm():
@@ -271,11 +296,11 @@ def clustering_vr():
     #######################
 
 if __name__ == "__main__":
-    degree_fbm()
-    degree_logistic()
-    degree_sinusoid()
-    degree_vr()
-    clustering_fbm()
-    clustering_logistic()
-    clustering_sinusoid()
-    clustering_vr()
+    #degree_fbm()
+    #degree_logistic()
+    #degree_sinusoid()
+    #degree_vr()
+    #clustering_fbm()
+    #clustering_logistic()
+    #clustering_sinusoid()
+    #clustering_vr()
