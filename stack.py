@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.signal as sci_sig
 import matplotlib.pyplot as plt
+import matplotlib
 import collections
 import scipy.signal as sci_sig
 import operator
@@ -184,6 +185,8 @@ def spectrum_fbm():
     f, Pxx = sci_sig.periodogram(fbm)
     plt.close()
     plt.loglog(f, np.sqrt(Pxx))
+    plt.xlabel("frequency")
+    plt.ylabel("PSD")
     plt.savefig("spectrum_fbm")
 
 def spectrum_logistic():
@@ -191,6 +194,8 @@ def spectrum_logistic():
     f, Pxx = sci_sig.periodogram(logit)
     plt.close()
     plt.loglog(f, np.sqrt(Pxx))
+    plt.xlabel("frequency")
+    plt.ylabel("PSD")
     plt.savefig("spectrum_logistic")
 
 def spectrum_sinusoid():
@@ -198,6 +203,8 @@ def spectrum_sinusoid():
     f, Pxx = sci_sig.periodogram(sinusoid)
     plt.close()
     plt.loglog(f, np.sqrt(Pxx))
+    plt.xlabel("frequency")
+    plt.ylabel("PSD")
     plt.savefig("spectrum_sinusoid")
 
 def spectrum_vr():
@@ -205,6 +212,8 @@ def spectrum_vr():
     f, Pxx = sci_sig.periodogram(vr)
     plt.close()
     plt.loglog(f, np.sqrt(Pxx))
+    plt.xlabel("frequency")
+    plt.ylabel("PSD")
     plt.savefig("spectrum_vr")
 
 
@@ -212,17 +221,23 @@ def plot_fbm():
     fbm = np.load("quick_fbm.npy")[0:1500]
     plt.close()
     plt.plot(fbm)
+    plt.xlabel("time")
+    plt.ylabel("y")
     plt.savefig("plot_fbm")
 
 def plot_logistic():
     logit = gen_logistic_map(1500)
     plt.close()
     plt.plot(logit)
+    plt.xlabel("time")
+    plt.ylabel("y")
     plt.savefig("plot_logistic")
 
 def plot_sinusoid():
     sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
     plt.close()
+    plt.xlabel("time")
+    plt.ylabel("y")
     plt.plot(sinusoid)
     plt.savefig("plot_sinusoid")
 
@@ -230,6 +245,8 @@ def plot_vr():
     vr = open_vr()
     plt.close()
     plt.plot(vr)
+    plt.xlabel("time")
+    plt.ylabel("y")
     plt.savefig("plot_vr")
 
 def graphify(ts):
@@ -243,7 +260,10 @@ def graphify(ts):
 def nx_graphify(ts):
     net = nx.DiGraph()
     graph, _, _ = graphify(ts)
-    print graph
+    for tail, heads in graph.iteritems():
+        for head in heads:
+            net.add_edge(tail, head)
+    return net
 
 def plot_stack_deg(ts, name):
     graph, _, _ = graphify(ts)
@@ -253,8 +273,10 @@ def plot_stack_deg(ts, name):
         degrees.append(degree)
     degrees = sorted(degrees, reverse=True)
     plt.close()
+    plt.xlabel("rank")
+    plt.ylabel("degree")
     plt.loglog(degrees)
-    plt.show()
+    plt.savefig(name)
 
 def degree_fbm():
     fbm = np.load("quick_fbm.npy")[0:1500]
@@ -263,44 +285,58 @@ def degree_fbm():
 def degree_logistic():
     logit = gen_logistic_map(1500)
     plot_stack_deg(logit, "degrees_logit")
-    #######################
 
 def degree_sinusoid():
     sinusoid = np.sin(np.linspace(0, 2 * np.pi, 1500))
     plot_stack_deg(sinusoid, "degrees_sinusoid")
-    #######################
 
 def degree_vr():
     vr = open_vr()
     plot_stack_deg(vr, "degrees_vr")
-    #######################
 
-def clustering_fbm():
+def stats_fbm():
     fbm = np.load("quick_fbm.npy")[0:1500]
-    plt.close()
-    #######################
+    net = nx_graphify(fbm)
+    print "fbm path length: ", nx.average_shortest_path_length(net)
+    print "fbm clustering: ", nx.average_clustering(net.to_undirected())
 
-def clustering_logistic():
+def stats_logistic():
     logit = gen_logistic_map(1500)
-    plt.close()
-    #######################
+    net = nx_graphify(logit)
+    print "logit path length: ", nx.average_shortest_path_length(net)
+    print "logit clustering: ", nx.average_clustering(net.to_undirected())
 
-def clustering_sinusoid():
+def stats_sinusoid():
     sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
-    plt.close()
-    #######################
+    net = nx_graphify(sinusoid)
+    print "sinusoid path length: ", nx.average_shortest_path_length(net)
+    print "sinusoid clustering: ", nx.average_clustering(net.to_undirected())
 
-def clustering_vr():
+def stats_vr():
     vr = open_vr()
-    plt.close()
-    #######################
+    net = nx_graphify(vr)
+    print "vr path length: ", nx.average_shortest_path_length(net)
+    print "vr clustering: ", nx.average_clustering(net.to_undirected())
+
+def inverse_stack():
+    vr = open_vr()
+    _, resampled, _ = graphify(vr)
+    plt.plot(resampled)
+    plt.savefig("resampled_stack")
 
 if __name__ == "__main__":
-    #degree_fbm()
-    #degree_logistic()
-    #degree_sinusoid()
-    #degree_vr()
-    #clustering_fbm()
-    #clustering_logistic()
-    #clustering_sinusoid()
-    #clustering_vr()
+    font = {'size': 20}
+    matplotlib.rc('font', **font)
+    plot_fbm()
+    plot_logistic()
+    plot_sinusoid()
+    plot_vr()
+    degree_fbm()
+    degree_logistic()
+    degree_sinusoid()
+    degree_vr()
+    spectrum_fbm()
+    spectrum_logistic()
+    spectrum_sinusoid()
+    spectrum_vr()
+    inverse_stack()
