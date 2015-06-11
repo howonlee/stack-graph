@@ -187,7 +187,7 @@ def spectrum_fbm():
     plt.loglog(f, np.sqrt(Pxx))
     plt.xlabel("frequency")
     plt.ylabel("PSD")
-    plt.savefig("spectrum_fbm")
+    plt.savefig("spectrum_fbm", bbox_inches="tight")
 
 def spectrum_logistic():
     logit = gen_logistic_map(1500)
@@ -196,7 +196,7 @@ def spectrum_logistic():
     plt.loglog(f, np.sqrt(Pxx))
     plt.xlabel("frequency")
     plt.ylabel("PSD")
-    plt.savefig("spectrum_logistic")
+    plt.savefig("spectrum_logistic", bbox_inches="tight")
 
 def spectrum_sinusoid():
     sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
@@ -205,7 +205,7 @@ def spectrum_sinusoid():
     plt.loglog(f, np.sqrt(Pxx))
     plt.xlabel("frequency")
     plt.ylabel("PSD")
-    plt.savefig("spectrum_sinusoid")
+    plt.savefig("spectrum_sinusoid", bbox_inches="tight")
 
 def spectrum_vr():
     vr = open_vr()
@@ -214,7 +214,7 @@ def spectrum_vr():
     plt.loglog(f, np.sqrt(Pxx))
     plt.xlabel("frequency")
     plt.ylabel("PSD")
-    plt.savefig("spectrum_vr")
+    plt.savefig("spectrum_vr", bbox_inches="tight")
 
 
 def plot_fbm():
@@ -223,7 +223,7 @@ def plot_fbm():
     plt.plot(fbm)
     plt.xlabel("time")
     plt.ylabel("y")
-    plt.savefig("plot_fbm")
+    plt.savefig("plot_fbm", bbox_inches="tight")
 
 def plot_logistic():
     logit = gen_logistic_map(1500)
@@ -231,7 +231,7 @@ def plot_logistic():
     plt.plot(logit)
     plt.xlabel("time")
     plt.ylabel("y")
-    plt.savefig("plot_logistic")
+    plt.savefig("plot_logistic", bbox_inches="tight")
 
 def plot_sinusoid():
     sinusoid = np.sin(np.linspace(0, 40 * np.pi, 1500))
@@ -239,7 +239,7 @@ def plot_sinusoid():
     plt.xlabel("time")
     plt.ylabel("y")
     plt.plot(sinusoid)
-    plt.savefig("plot_sinusoid")
+    plt.savefig("plot_sinusoid", bbox_inches="tight")
 
 def plot_vr():
     vr = open_vr()
@@ -247,7 +247,7 @@ def plot_vr():
     plt.plot(vr)
     plt.xlabel("time")
     plt.ylabel("y")
-    plt.savefig("plot_vr")
+    plt.savefig("plot_vr", bbox_inches="tight")
 
 def graphify(ts):
     ts_map, idxs = discretize(ts, bucket_size=0.05)
@@ -276,7 +276,7 @@ def plot_stack_deg(ts, name):
     plt.xlabel("rank")
     plt.ylabel("degree")
     plt.loglog(degrees)
-    plt.savefig(name)
+    plt.savefig(name, bbox_inches="tight")
 
 def degree_fbm():
     fbm = np.load("quick_fbm.npy")[0:1500]
@@ -319,24 +319,27 @@ def stats_vr():
     print "vr clustering: ", nx.average_clustering(net.to_undirected())
 
 def inverse_stack():
+    plt.close()
     vr = open_vr()
     _, resampled, _ = graphify(vr)
     plt.plot(resampled)
-    plt.savefig("resampled_stack")
+    plt.xlabel("time")
+    plt.ylabel("y")
+    plt.savefig("resampled_stack", bbox_inches="tight")
 
 if __name__ == "__main__":
     font = {'size': 20}
     matplotlib.rc('font', **font)
-    plot_fbm()
-    plot_logistic()
-    plot_sinusoid()
-    plot_vr()
-    degree_fbm()
-    degree_logistic()
-    degree_sinusoid()
-    degree_vr()
-    spectrum_fbm()
-    spectrum_logistic()
-    spectrum_sinusoid()
-    spectrum_vr()
+    #plot_fbm()
+    #plot_logistic()
+    #plot_sinusoid()
+    #plot_vr()
+    #degree_fbm()
+    #degree_logistic()
+    #degree_sinusoid()
+    #degree_vr()
+    #spectrum_fbm()
+    #spectrum_logistic()
+    #spectrum_sinusoid()
+    #spectrum_vr()
     inverse_stack()
